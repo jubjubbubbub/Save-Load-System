@@ -1,0 +1,24 @@
+[System.Serializable]
+public class SaveData {
+    public Dictionary<string, int> ingredientInventory;
+    public Dictionary<ComicIssue, bool> unlockedComics;
+    public MascotMood currentMood;
+    public List<string> craftedPotions;
+}
+
+public class SaveManager : MonoBehaviour {
+    public SaveData currentSave;
+
+    public void SaveGame() {
+        string json = JsonUtility.ToJson(currentSave);
+        PlayerPrefs.SetString("SaveData", json);
+        PlayerPrefs.Save();
+    }
+
+    public void LoadGame() {
+        if (PlayerPrefs.HasKey("SaveData")) {
+            string json = PlayerPrefs.GetString("SaveData");
+            currentSave = JsonUtility.FromJson<SaveData>(json);
+        }
+    }
+}
